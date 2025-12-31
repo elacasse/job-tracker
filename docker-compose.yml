@@ -17,7 +17,7 @@ services:
 
   # === Nginx (web server for Laravel) ===
   nginx:
-    image: nginx:1.27-alpine
+    image: nginx:alpine
     container_name: nginx
     ports:
       - "80:80"
@@ -42,8 +42,8 @@ services:
 
   # === MySQL database ===
   db:
-    image: mysql:8.0
-    container_name: mysql-db
+    image: mariadb:lts
+    container_name: mariadb-db
     restart: always
     environment:
       MYSQL_DATABASE: laravel

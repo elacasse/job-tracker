@@ -135,9 +135,11 @@
       <path value="$PROJECT_DIR$/backend/vendor/laravel/sanctum" />
       <path value="$PROJECT_DIR$/backend/vendor/barryvdh/laravel-ide-helper" />
       <path value="$PROJECT_DIR$/backend/vendor/barryvdh/reflection-docblock" />
+      <path value="$PROJECT_DIR$/backend/vendor/laravel-json-api/testing" />
+      <path value="$PROJECT_DIR$/backend/vendor/cloudcreativity/json-api-testing" />
     </include_path>
   </component>
-  <component name="PhpProjectSharedConfiguration" php_language_level="8.3" />
+  <component name="PhpProjectSharedConfiguration" php_language_level="8.5" />
   <component name="PhpStanOptionsConfiguration">
     <option name="transferred" value="true" />
   </component>
