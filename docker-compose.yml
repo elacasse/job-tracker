@@ -1,6 +1,7 @@
 services:
   # === PHP-FPM (Laravel app runtime) ===
   app:
+    restart: unless-stopped
     build:
       context: ./backend
       dockerfile: Dockerfile
@@ -14,9 +15,13 @@ services:
       - DB_PASSWORD=secret
     depends_on:
       - db
+    networks:
+      - default
+      - llm_private
 
   # === Nginx (web server for Laravel) ===
   nginx:
+    restart: unless-stopped
     image: nginx:alpine
     container_name: nginx
     ports:
@@ -24,13 +29,16 @@ services:
       - "8080:80"
     volumes:
       - ./backend:/var/www/html
-      - ./backend/nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
     depends_on:
       - app
       - frontend
+    networks:
+      - default
 
   # === Frontend (Vue.js) ===
   frontend:
+    restart: unless-stopped
     build:
       context: ./frontend
       dockerfile: Dockerfile
@@ -39,12 +47,14 @@ services:
       - ./frontend:/app
     # no ports here – only reachable via nginx
     command: ["npm", "run", "dev", "--", "--host"]
+    networks:
+      - default
 
   # === MySQL database ===
   db:
     image: mariadb:lts
     container_name: mariadb-db
-    restart: always
+    restart: unless-stopped
     environment:
       MYSQL_DATABASE: laravel
       MYSQL_USER: laravel
@@ -54,5 +64,30 @@ services:
       - "3306:3306"
     volumes:
       - ./database:/var/lib/mysql
+    networks:
+      - default
 
-volumes: {}
+  ollama:
+    image: ollama/ollama:latest
+    restart: unless-stopped
+    environment:
+      - OLLAMA_HOST=0.0.0.0:11434
+    volumes:
+      - ollama:/root/.ollama
+    networks:
+      - default
+      - llm_private
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+
+networks:
+  llm_private:
+    internal: true
+
+volumes:
+  ollama:
