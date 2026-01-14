@@ -1,8 +1,0 @@
-// tsconfig.vitest.json
-{
-  "extends": "./tsconfig.app.json",
-  "include": ["src/**/*.spec.ts", "src/**/__tests__/**/*.ts", "env.d.ts"],
-  "compilerOptions": {
-    "types": ["vitest/globals", "node", "jsdom"]
-  }
-}
