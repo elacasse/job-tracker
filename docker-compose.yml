@@ -1,6 +1,7 @@
 services:
   # === PHP-FPM (Laravel app runtime) ===
   app:
+    image: ericlacasse/job-tracker-app:latest
     restart: unless-stopped
     build:
       context: ./backend
@@ -38,6 +39,7 @@ services:
 
   # === Frontend (Vue.js) ===
   frontend:
+    image: ericlacasse/job-tracker-frontend:latest
     restart: unless-stopped
     build:
       context: ./frontend
